@@ -14,7 +14,9 @@
     "technicalindicators": "3.1.0",
     "trading-vue-js": "0.10.0",
     "tulind": "0.8.18",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-router": "^2.8.1",
+    "ws": "^8.6.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "4.1.1",
@@ -53,6 +55,5 @@
     "vue",
     "vuejs",
     "starter"
-  ],
-  "description": "Vue.js example starter project"
+  ]
 }
