@@ -54,7 +54,6 @@ export default {
   components: { TradingVue },
 
   data() {
-    console.log('DIMA LOX')
     return {
       width: window.innerWidth,
       height: window.innerHeight,

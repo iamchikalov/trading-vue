@@ -25,7 +25,7 @@ socket1.onmessage = function(event) {
   const data = JSON.parse(event.data)
   const candle_sticks_lvl = data.candle_sticks_lvl
   const candle = candle_sticks_lvl.BTC['5m'].candle_sticks
-  const levels = candle_sticks_lvl.BCH['5m'].levels
+  const levels = candle_sticks_lvl.BTC['5m'].levels
 
   candle.forEach((l) => {
     const d = l
@@ -50,7 +50,7 @@ socket1.onmessage = function(event) {
 };
 
 export default {
-  name: "ETH",
+  name: "BTC",
   components: { TradingVue },
 
   data() {
@@ -61,13 +61,23 @@ export default {
       overlays: [ImpLine],
       onchart: [
         {
-          name: "ImpLine",
+          name: "ImpLineUpper",
           type: "ImportantLevel",
           data: [],
           settings: {
             color_imp_level: "#00ff17",
-            label_imp_level: '1.1025',
-            imp_level: 1.1025,
+            label_imp_level: UpperLabel,
+            imp_level: ImpLineUpper,
+          }
+        },
+        {
+          name: "ImpLineLower",
+          type: "ImportantLevel",
+          data: [],
+          settings: {
+            color_imp_level: "#d70808",
+            label_imp_level: LowerLabel,
+            imp_level: ImpLineLower,
           }
         },
       ],
