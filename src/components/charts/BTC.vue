@@ -10,7 +10,12 @@
 <script>
 import { TradingVue } from "trading-vue-js"
 import ImpLine from "@/components/overlays/ImpLine"
+
 let candlesArr = []
+let ImpLineLower = [0]
+let ImpLineUpper = [0]
+let LowerLabel = ['']
+let UpperLabel = ['']
 
 const socket1 = new WebSocket(
     (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
@@ -20,6 +25,8 @@ socket1.onmessage = function(event) {
   const data = JSON.parse(event.data)
   const candle_sticks_lvl = data.candle_sticks_lvl
   const candle = candle_sticks_lvl.BTC['5m'].candle_sticks
+  const levels = candle_sticks_lvl.BCH['5m'].levels
+
   candle.forEach((l) => {
     const d = l
 
@@ -35,6 +42,11 @@ socket1.onmessage = function(event) {
     const date = parseInt(d[6])
     candlesArr.push([date, open, high, low, close])
   });
+
+  ImpLineLower[0] = levels[0]
+  ImpLineUpper[0] = levels[levels.length - 1]
+  LowerLabel[0] = String(ImpLineLower[0])
+  UpperLabel[0] = String(ImpLineUpper[0])
 };
 
 export default {

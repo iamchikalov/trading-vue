@@ -10,7 +10,12 @@
 <script>
 import { TradingVue } from "trading-vue-js"
 import ImpLine from "@/components/overlays/ImpLine"
+
 let candlesArr = []
+let ImpLineLower = [0]
+let ImpLineUpper = [0]
+let LowerLabel = ['']
+let UpperLabel = ['']
 
 const socket1 = new WebSocket(
     (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
@@ -19,8 +24,10 @@ const socket1 = new WebSocket(
 socket1.onmessage = function(event) {
   const data = JSON.parse(event.data)
   const candle_sticks_lvl = data.candle_sticks_lvl
-  const candle = candle_sticks_lvl.BCH['5m'].candle_sticks
-  candle.forEach((l) => {
+  const candles = candle_sticks_lvl.BCH['5m'].candle_sticks
+  const levels = candle_sticks_lvl.BCH['5m'].levels
+
+  candles.forEach((l) => {
     const d = l
 
     const open = parseFloat(d[1])
@@ -35,6 +42,11 @@ socket1.onmessage = function(event) {
     const date = parseInt(d[6])
     candlesArr.push([date, open, high, low, close])
   });
+
+  ImpLineLower[0] = levels[0]
+  ImpLineUpper[0] = levels[levels.length - 1]
+  LowerLabel[0] = String(ImpLineLower[0])
+  UpperLabel[0] = String(ImpLineUpper[0])
 };
 
 export default {
@@ -42,6 +54,7 @@ export default {
   components: { TradingVue },
 
   data() {
+    console.log('DIMA LOX')
     return {
       width: window.innerWidth,
       height: window.innerHeight,
@@ -49,13 +62,23 @@ export default {
       overlays: [ImpLine],
       onchart: [
         {
-          name: "ImpLine",
+          name: "ImpLineUpper",
           type: "ImportantLevel",
           data: [],
           settings: {
             color_imp_level: "#00ff17",
-            label_imp_level: '1.1025',
-            imp_level: 1.1025,
+            label_imp_level: UpperLabel,
+            imp_level: ImpLineUpper,
+          }
+        },
+        {
+          name: "ImpLineLower",
+          type: "ImportantLevel",
+          data: [],
+          settings: {
+            color_imp_level: "#d70808",
+            label_imp_level: LowerLabel,
+            imp_level: ImpLineLower,
           }
         },
       ],

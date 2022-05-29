@@ -13,8 +13,10 @@ export default {
     },
     draw(ctx) {
       this.drawLine(ctx, this.$props.settings.imp_level, this.$props.settings.color_imp_level, this.$props.settings.label_imp_level)
+
     },
     drawLine(ctx, price, color, label) {
+      console.log(label)
       const layout = this.$props.layout
       ctx.strokeStyle = color
       ctx.beginPath()
