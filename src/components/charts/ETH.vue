@@ -17,6 +17,7 @@ let ImpLineUpper = [0]
 let LowerLabel = ['']
 let UpperLabel = ['']
 
+
 const socket1 = new WebSocket(
     (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
     + "213.189.220.102:8000"
