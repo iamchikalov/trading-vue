@@ -22,6 +22,7 @@ const socket1 = new WebSocket(
     + "213.189.220.102:8000"
     + '/ws/charts/');
 socket1.onmessage = function(event) {
+  console.log('ETH')
   const data = JSON.parse(event.data)
   const candle_sticks_lvl = data.candle_sticks_lvl
   const candle = candle_sticks_lvl.ETH['5m'].candle_sticks

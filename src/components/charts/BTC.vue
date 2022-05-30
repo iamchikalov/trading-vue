@@ -22,11 +22,12 @@ const socket1 = new WebSocket(
     + "213.189.220.102:8000"
     + '/ws/charts/');
 socket1.onmessage = function(event) {
+  console.log('BTC')
   const data = JSON.parse(event.data)
   const candle_sticks_lvl = data.candle_sticks_lvl
   const candle = candle_sticks_lvl.BTC['5m'].candle_sticks
   const levels = candle_sticks_lvl.BTC['5m'].levels
-
+  console.log(data)
   candle.forEach((l) => {
     const d = l
 

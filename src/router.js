@@ -21,7 +21,7 @@ export default new Router({
         },
         {
             path: '/BTC',
-            component: () => import('./components/charts/BCH')
+            component: () => import('./components/charts/BTC')
         }
     ]
 })
