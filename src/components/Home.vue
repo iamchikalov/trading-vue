@@ -9,5 +9,8 @@
     <br>
     <br>
     <a href="/BTC">BTC</a>
+    <br>
+    <br>
+    <a href="/Multi">Multi</a>
   </div>
 </template>

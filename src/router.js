@@ -17,11 +17,15 @@ export default new Router({
         },
         {
             path: '/BCH',
-            component: () => import('./components/charts/BCH')
+            component: () => import('./components/charts/BTC')
         },
         {
             path: '/BTC',
             component: () => import('./components/charts/BTC')
+        },
+        {
+            path: '/Multi',
+            component: () => import('./AppMultichart')
         }
     ]
 })

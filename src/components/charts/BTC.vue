@@ -11,7 +11,8 @@
 import { TradingVue } from "trading-vue-js"
 import ImpLine from "@/components/overlays/ImpLine"
 
-let candlesArr = []
+let candlesArr_btc = []
+let candlesArr_bch = []
 let ImpLineLower = [0]
 let ImpLineUpper = [0]
 let LowerLabel = ['']
@@ -25,10 +26,11 @@ socket1.onmessage = function(event) {
   console.log('BTC')
   const data = JSON.parse(event.data)
   const candle_sticks_lvl = data.candle_sticks_lvl
-  const candle = candle_sticks_lvl.BTC['5m'].candle_sticks
+  const candles_btc = candle_sticks_lvl.BTC['5m'].candle_sticks
+ // const candles_bch = candle_sticks_lvl.BCH['5m'].candle_sticks
   const levels = candle_sticks_lvl.BTC['5m'].levels
   console.log(data)
-  candle.forEach((l) => {
+  candles_btc.forEach((l) => {
     const d = l
 
     const open = parseFloat(d[1])
@@ -41,8 +43,24 @@ socket1.onmessage = function(event) {
     }
 
     const date = parseInt(d[6])
-    candlesArr.push([date, open, high, low, close])
+    candlesArr_btc.push([date, open, high, low, close])
   });
+
+  // candles_bch.forEach((l) => {
+  //   const d = l
+  //
+  //   const open = parseFloat(d[1])
+  //   const high = parseFloat(d[2])
+  //   const low = parseFloat(d[3])
+  //   const close = parseFloat(d[4])
+  //
+  //   if (isNaN(open)) {
+  //     return
+  //   }
+  //
+  //   const date = parseInt(d[6])
+  //   candlesArr_bch.push([date, open, high, low, close])
+  // });
 
   ImpLineLower[0] = levels[0]
   ImpLineUpper[0] = levels[levels.length - 1]
@@ -56,9 +74,9 @@ export default {
 
   data() {
     return {
-      width: window.innerWidth,
-      height: window.innerHeight,
-      ohlcv: candlesArr,
+      width: window.innerWidth - 1300,
+      height: window.innerHeight - 600,
+      ohlcv: candlesArr_bch,
       overlays: [ImpLine],
       onchart: [
         {
@@ -87,4 +105,5 @@ export default {
 };
 </script>
 <style>
+
 </style>

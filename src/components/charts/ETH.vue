@@ -26,10 +26,10 @@ socket1.onmessage = function(event) {
   console.log('ETH')
   const data = JSON.parse(event.data)
   const candle_sticks_lvl = data.candle_sticks_lvl
-  const candle = candle_sticks_lvl.ETH['5m'].candle_sticks
+  const candles = candle_sticks_lvl.ETH['5m'].candle_sticks
   const levels = candle_sticks_lvl.ETH['5m'].levels
 
-  candle.forEach((l) => {
+  candles.forEach((l) => {
     const d = l
 
     const open = parseFloat(d[1])

@@ -25,10 +25,10 @@ socket1.onmessage = function(event) {
   console.log('BCH')
   const data = JSON.parse(event.data)
   const candle_sticks_lvl = data.candle_sticks_lvl
-  const candles = candle_sticks_lvl.BCH['5m'].candle_sticks
+  const candles_bch = candle_sticks_lvl.BCH['5m'].candle_sticks
   const levels = candle_sticks_lvl.BCH['5m'].levels
 
-  candles.forEach((l) => {
+  candles_bch.forEach((l) => {
     const d = l
 
     const open = parseFloat(d[1])
@@ -56,8 +56,8 @@ export default {
 
   data() {
     return {
-      width: window.innerWidth,
-      height: window.innerHeight,
+      width: window.innerWidth + 200,
+      height: window.innerHeight + 200,
       ohlcv: candlesArr,
       overlays: [ImpLine],
       onchart: [
@@ -87,4 +87,8 @@ export default {
 };
 </script>
 <style>
+div {
+  height: 200px;
+  width: 50%;
+}
 </style>

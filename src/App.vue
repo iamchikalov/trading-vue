@@ -1,8 +1,5 @@
 <template>
-  <div id="app">
-    <hr>
     <router-view />
-  </div>
 </template>
 
 <script>

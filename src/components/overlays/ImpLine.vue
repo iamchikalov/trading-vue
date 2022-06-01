@@ -16,6 +16,7 @@ export default {
 
     },
     drawLine(ctx, price, color, label) {
+      console.log('drawLine')
       const layout = this.$props.layout
       ctx.strokeStyle = color
       ctx.beginPath()
