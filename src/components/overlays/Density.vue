@@ -1,6 +1,5 @@
 <script>
 import { Overlay } from 'trading-vue-js'
-
 export default {
   name: 'Density',
   mixins: [Overlay],
@@ -14,26 +13,20 @@ export default {
     draw(ctx) {
       this.drawLine(
           ctx,
-          this.$props.settings.density_up,
-          this.$props.settings.density_label_up,
-          this.$props.settings.density_color_up,
-      )
-      this.drawLine(
-          ctx,
-          this.$props.settings.density_low,
-          this.$props.settings.density_label_low,
-          this.$props.settings.density_color_low,
-      )
+          this.$props.settings.density,
+          this.$props.settings.density_color,
+          this.$props.settings.density_label)
     },
     drawLine(ctx, price, color, label) {
-      const layout1 = this.$props.layout
+      const layout = this.$props.layout
       ctx.strokeStyle = color
       ctx.beginPath()
-      let y = layout1.$2screen(price)
+      let y = layout.$2screen(price)
       ctx.moveTo(0, y)
-      ctx.lineTo(layout1.width, y)
+      ctx.lineTo(layout.width, y)
       ctx.stroke()
       let w = ctx.canvas.width
+      //ctx.fillRect(0, y, w + 1, 10)
       ctx.fillStyle = color
       ctx.textColor = color
       ctx.textAlign = 'right'
