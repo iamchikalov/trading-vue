@@ -9,13 +9,13 @@
 
 <script>
 import { TradingVue } from "trading-vue-js"
-import ImpLine from "@/components/overlays/ImpLine"
+import Density from "@/components/overlays/Density"
 
 let candlesArr = []
-let ImpLineLower = [0]
-let ImpLineUpper = [0]
-let LowerLabel = ['']
-let UpperLabel = ['']
+let density_low = [0]
+let density_up = [0]
+let density_label_low = ['']
+let density_label_up = ['']
 
 const socket1 = new WebSocket(
     (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
@@ -43,10 +43,10 @@ socket1.onmessage = function(event) {
     candlesArr.push([date, open, high, low, close])
   });
 
-  ImpLineLower[0] = levels[0]
-  ImpLineUpper[0] = levels[levels.length - 1]
-  LowerLabel[0] = String(ImpLineLower[0])
-  UpperLabel[0] = String(ImpLineUpper[0])
+  density_low[0] = levels[0]
+  density_up[0] = levels[levels.length - 1]
+  density_label_low[0] = String(density_low[0])
+  density_label_up[0] = String(density_up[0])
 };
 
 export default {
@@ -58,26 +58,26 @@ export default {
       width: window.innerWidth,
       height: window.innerHeight,
       ohlcv: candlesArr,
-      overlays: [ImpLine],
+      overlays: [Density],
       onchart: [
         {
-          name: "ImpLineUpper",
-          type: "ImportantLevel",
+          name: "DensityUp",
+          type: "Density",
           data: [],
           settings: {
-            color_imp_level: "#00ff17",
-            label_imp_level: UpperLabel,
-            imp_level: ImpLineUpper,
+            density_color: "#00ff17",
+            density_label: density_label_up,
+            density: density_up,
           }
         },
         {
-          name: "ImpLineLower",
-          type: "ImportantLevel",
+          name: "DensityLow",
+          type: "Density",
           data: [],
           settings: {
-            color_imp_level: "#d70808",
-            label_imp_level: LowerLabel,
-            imp_level: ImpLineLower,
+            density_color: "#d70808",
+            density_label: density_label_low,
+            density: density_low,
           }
         },
       ],
