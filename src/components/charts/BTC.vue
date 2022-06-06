@@ -27,7 +27,7 @@ const socket2 = new WebSocket(
     (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
     + "213.189.220.102:8000"
     + '/ws/densitys/'
-)
+);
 
 socket1.onmessage = function (event) {
   const data = JSON.parse(event.data)
