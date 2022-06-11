@@ -88,24 +88,23 @@ export default {
       overlays: [Density],
       onchart: [
         {
-          name: "DensityUp",
-          type: "Density",
+          name: "Levels and densities",
+          type: "Lines",
           data: [],
-          settings: {
-            density_color: "#d70808",
-            density_label: density_label_up,
-            density: density_up,
-          }
-        },
-        {
-          name: "DensityLow",
-          type: "Density",
-          data: [],
-          settings: {
-            density_color: "#00ff17",
-            density_label: density_label_low,
-            density: density_low,
-          }
+          settings: [
+            {
+              y: density_up,
+              color: "#d70808",
+              label: density_label_up,
+              dotted: false
+            },
+            {
+              y: density_low,
+              color: "#00ff15",
+              label: density_label_low,
+              dotted: false
+            },
+          ],
         },
       ],
     };
