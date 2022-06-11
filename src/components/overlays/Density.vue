@@ -1,26 +1,34 @@
 <script>
 import { Overlay } from 'trading-vue-js'
+
 export default {
-  name: 'Density',
-  mixins: [Overlay],
+  name: 'Lines',
+  mixins: [ Overlay ],
   methods: {
     meta_info() {
       return {
         author: 'Bogdan', version: '1.0.0',
-        desc: 'Densities'
+        desc: 'Draw lines'
       }
     },
     draw(ctx) {
-      this.drawLine(
-          ctx,
-          this.$props.settings.density,
-          this.$props.settings.density_color,
-          this.$props.settings.density_label)
+      this.$props.settings.forEach((lineSettings) => {
+        this.drawLine(
+            ctx,
+            lineSettings.y,
+            lineSettings.color,
+            lineSettings.label,
+            lineSettings.dotted
+        )
+      })
     },
-    drawLine(ctx, price, color, label) {
+    drawLine(ctx, price, color, label, dotted) {
       const layout = this.$props.layout
       ctx.strokeStyle = color
       ctx.beginPath()
+      if (dotted) {
+        ctx.setLineDash([10, 10])
+      }
       let y = layout.$2screen(price)
       ctx.moveTo(0, y)
       ctx.lineTo(layout.width, y)
@@ -33,8 +41,12 @@ export default {
       ctx.font = '20px consolas'
       ctx.fillText(label, w - 10, y - 3)
     },
-    use_for() { return ['Density'] },
-    data_colors() { return [this.color] }
+    use_for() {
+      return ['Lines']
+    },
+    data_colors() {
+      return [this.color]
+    }
   }
 }
 </script>

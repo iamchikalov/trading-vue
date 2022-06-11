@@ -13,10 +13,10 @@ import parseCandle from "@/utils/utils"
 import Density from "@/components/overlays/Density"
 
 let candlesArr = []
-let density_up = [0]
-let density_low = [0]
-let density_label_up = ['']
-let density_label_low = ['']
+let density_up = []
+let density_low = []
+let density_label_up = []
+let density_label_low = []
 
 const socket1 = new WebSocket(
     (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
@@ -29,33 +29,52 @@ const socket2 = new WebSocket(
     + '/ws/densitys/'
 );
 
-socket1.onmessage = function(event) {
+function DataCandlesLevels(event, vm) {
   const data = JSON.parse(event.data)
-  const candle_sticks_lvl = data.candle_sticks_lvl
-  const candles = candle_sticks_lvl.ETH['5m'].candle_sticks
-//  const levels = candle_sticks_lvl.ETH['5m'].levels
+  const candles = data.candle_sticks_lvl.ETH['5m'].candle_sticks
+  const levels = JSON.parse(JSON.stringify(data.candle_sticks_lvl.ETH['5m'].levels))
 
   if (!candlesArr.length) {
     candles.forEach((l) => {
       let a = parseCandle(l)
       candlesArr.push(a)
-    });
+    })
   } else {
     if (parseInt(candles[candles.length - 1][6]) !== candlesArr[candlesArr.length - 1][0]) {
       let a = parseCandle(candles[candles.length - 1])
       candlesArr.push(a)
+    } else {
+      candlesArr[candlesArr.length - 1][1] = parseFloat(candles[candles.length - 1][1])
+      candlesArr[candlesArr.length - 1][2] = parseFloat(candles[candles.length - 1][2])
+      candlesArr[candlesArr.length - 1][3] = parseFloat(candles[candles.length - 1][3])
+      candlesArr[candlesArr.length - 1][4] = parseFloat(candles[candles.length - 1][4])
     }
   }
-};
+  vm.ohlcv = candlesArr
 
-socket2.onmessage = function (event) {
+  const levels_settings = levels.map((level) => ({
+    y: [level],
+    color: '#0bf5f5',
+    label: [String(level)],
+    dotted: true
+  }))
+
+  vm.onchart[0].settings = [vm.onchart[0].settings[0], vm.onchart[0].settings[1], ...levels_settings]
+}
+
+function DataDensities(event, vm) {
   const data = JSON.parse(event.data)
 
   density_up[0] = data.densitys.ETH.ask[0]
   density_low[0] = data.densitys.ETH.bid[0]
   density_label_up[0] = String(density_up[0])
   density_label_low[0] = String(density_low[0])
-};
+
+  vm.onchart[0].settings[0].y = density_up
+  vm.onchart[0].settings[1].y = density_low
+  vm.onchart[0].settings[0].label = density_label_up
+  vm.onchart[0].settings[1].label = density_label_low
+}
 
 export default {
   name: "ETH",
@@ -90,6 +109,10 @@ export default {
         },
       ],
     };
+  },
+  created() {
+    socket1.onmessage = (event) => DataCandlesLevels(event, this)
+    socket2.onmessage = (event) => DataDensities(event, this)
   },
 };
 </script>
