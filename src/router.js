@@ -22,6 +22,10 @@ export default new Router({
         {
             path: '/BTC',
             component: () => import('./components/charts/BTC')
+        },
+        {
+            path: '/coins/:id',
+            component: () => import('@/pages/Coin')
         }
     ]
 })

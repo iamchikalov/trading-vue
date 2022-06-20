@@ -9,5 +9,22 @@
     <br>
     <br>
     <a href="/BTC">BTC</a>
+    <hr>
+    <hr>
+    <ul>
+      <li v-for="coin in coinsArr" :key="coin">
+        {{ coin }}
+      </li>
+    </ul>
   </div>
 </template>
+<script>
+
+export default {
+  props: [ 'coinsArr' ]
+}
+</script>
+
+//TODO: нужно написать отдельный js файл с сокетом и получением данных, после
+этого надо сделать CoinChart, где происходит отрисовка, потом всё готовое
+просто прокидываем в Coin.vue

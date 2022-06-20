@@ -1,17 +1,24 @@
 <template>
+  <div>
   <trading-vue
       :data="this.$data"
       :width="this.width"
       :height="this.height"
       :overlays="this.overlays"
   ></trading-vue>
+    <Home
+        :coinsArr="array"
+    />
+  </div>
 </template>
 
 <script>
 import { TradingVue } from "trading-vue-js"
 import parseCandle from "@/utils/utils"
 import Density from "@/components/overlays/Density"
+import Home from "@/components/Home"
 
+let coinsArr = []
 let candlesArr = []
 let density_up = []
 let density_low = []
@@ -33,6 +40,8 @@ function DataCandlesLevels(event, vm) {
   const data = JSON.parse(event.data)
   const candles = data.candle_sticks_lvl.BTC['5m'].candle_sticks
   const levels = JSON.parse(JSON.stringify(data.candle_sticks_lvl.BTC['5m'].levels))
+  coinsArr = Object.entries(data.candle_sticks_lvl).map(([key]) => key)
+  console.log(coinsArr)
 
   if (!candlesArr.length) {
     candles.forEach((l) => {
@@ -51,6 +60,7 @@ function DataCandlesLevels(event, vm) {
     }
   }
   vm.ohlcv = candlesArr
+  vm.array = coinsArr
 
   const levels_settings = levels.map((level) => ({
     y: [level],
@@ -78,10 +88,11 @@ function DataDensities(event, vm) {
 
 export default {
   name: "BTC",
-  components: { TradingVue },
+  components: { TradingVue, Home },
 
   data() {
     return {
+      array: coinsArr,
       width: window.innerWidth,
       height: window.innerHeight,
       ohlcv: candlesArr,
