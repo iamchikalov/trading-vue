@@ -10,7 +10,7 @@ function parseCandle (l) {
         return null
     }
 
-    const date = parseInt(d[6])
+    const date = parseInt(d[0])
     return [date, open, high, low, close]
 }
 

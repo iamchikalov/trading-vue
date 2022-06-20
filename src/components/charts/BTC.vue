@@ -14,105 +14,45 @@
 
 <script>
 import { TradingVue } from "trading-vue-js"
-import parseCandle from "@/utils/utils"
 import Density from "@/components/overlays/Density"
 import Home from "@/components/Home"
+import {
+  candlesLevelsSocket,
+  DensitiesSocket,
+  getDensities,
+  getCandlesLevels
+} from "@/utils/WebSocket"
 
-let coinsArr = []
-let candlesArr = []
-let density_up = []
-let density_low = []
-let density_label_up = []
-let density_label_low = []
-
-const socket1 = new WebSocket(
-    (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
-    + "213.189.220.102:8000"
-    + '/ws/charts/'
-);
-const socket2 = new WebSocket(
-    (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
-    + "213.189.220.102:8000"
-    + '/ws/densitys/'
-);
-
-function DataCandlesLevels(event, vm) {
-  const data = JSON.parse(event.data)
-  const candles = data.candle_sticks_lvl.BTC['5m'].candle_sticks
-  const levels = JSON.parse(JSON.stringify(data.candle_sticks_lvl.BTC['5m'].levels))
-  coinsArr = Object.entries(data.candle_sticks_lvl).map(([key]) => key)
-  console.log(coinsArr)
-
-  if (!candlesArr.length) {
-    candles.forEach((l) => {
-      let a = parseCandle(l)
-      candlesArr.push(a)
-    })
-  } else {
-    if (parseInt(candles[candles.length - 1][6]) !== candlesArr[candlesArr.length - 1][0]) {
-      let a = parseCandle(candles[candles.length - 1])
-      candlesArr.push(a)
-    } else {
-      candlesArr[candlesArr.length - 1][1] = parseFloat(candles[candles.length - 1][1])
-      candlesArr[candlesArr.length - 1][2] = parseFloat(candles[candles.length - 1][2])
-      candlesArr[candlesArr.length - 1][3] = parseFloat(candles[candles.length - 1][3])
-      candlesArr[candlesArr.length - 1][4] = parseFloat(candles[candles.length - 1][4])
-    }
-  }
-  vm.ohlcv = candlesArr
-  vm.array = coinsArr
-
-  const levels_settings = levels.map((level) => ({
-    y: [level],
-    color: '#0bf5f5',
-    label: [String(level)],
-    dotted: true
-  }))
-
-  vm.onchart[0].settings = [vm.onchart[0].settings[0], vm.onchart[0].settings[1], ...levels_settings]
-}
-
-function DataDensities(event, vm) {
-  const data = JSON.parse(event.data)
-
-  density_up[0] = data.densitys.BTC.ask[0]
-  density_low[0] = data.densitys.BTC.bid[0]
-  density_label_up[0] = String(density_up[0])
-  density_label_low[0] = String(density_low[0])
-
-  vm.onchart[0].settings[0].y = density_up
-  vm.onchart[0].settings[1].y = density_low
-  vm.onchart[0].settings[0].label = density_label_up
-  vm.onchart[0].settings[1].label = density_label_low
-}
+let coin = 'BTC'
 
 export default {
   name: "BTC",
   components: { TradingVue, Home },
 
   data() {
+    console.log(coin)
     return {
-      array: coinsArr,
+      array: [],
       width: window.innerWidth,
       height: window.innerHeight,
-      ohlcv: candlesArr,
+      ohlcv: [],
       overlays: [Density],
       onchart: [
         {
           name: "Levels and densities",
           type: "Lines",
           data: [],
-          settings: [
+          settings:[
             {
-              y: density_up,
+              y: [],
               color: "#d70808",
-              label: density_label_up,
+              label: [],
               dotted: false
             },
             {
-              y: density_low,
+              y: [],
               color: "#00ff15",
-              label: density_label_low,
+              label: [],
               dotted: false
             },
           ],
@@ -121,8 +61,8 @@ export default {
     };
   },
   created() {
-    socket1.onmessage = (event) => DataCandlesLevels(event, this)
-    socket2.onmessage = (event) => DataDensities(event, this)
+    candlesLevelsSocket.onmessage = (event) => getCandlesLevels(event, this, coin)
+    DensitiesSocket.onmessage = (event) => getDensities(event, this)
   },
 };
 </script>
