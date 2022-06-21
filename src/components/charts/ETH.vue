@@ -34,6 +34,7 @@ function DataCandlesLevels(event, vm) {
   const candles = data.candle_sticks_lvl.ETH['5m'].candle_sticks
   const levels = JSON.parse(JSON.stringify(data.candle_sticks_lvl.ETH['5m'].levels))
 
+  console.log()
   if (!candlesArr.length) {
     candles.forEach((l) => {
       let a = parseCandle(l)
@@ -50,6 +51,7 @@ function DataCandlesLevels(event, vm) {
       candlesArr[candlesArr.length - 1][4] = parseFloat(candles[candles.length - 1][4])
     }
   }
+  console.log(candlesArr)
   vm.ohlcv = candlesArr
 
   const levels_settings = levels.map((level) => ({

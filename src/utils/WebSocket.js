@@ -1,6 +1,5 @@
 import parseCandle from "@/utils/utils"
 
-
 export const candlesLevelsSocket = new WebSocket(
     (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
     + "213.189.220.102:8000"
@@ -15,7 +14,7 @@ export const DensitiesSocket = new WebSocket(
 export function getCandlesLevels(event, vm, coin) {
     const data = JSON.parse(event.data)
 
-    const candlesArr = []
+    const candlesArr = vm.ohlcv ? vm.ohlcv : []
     const candles = data.candle_sticks_lvl[coin]['5m'].candle_sticks
     const levels = JSON.parse(JSON.stringify(data.candle_sticks_lvl.BTC['5m'].levels))
     const coinsArr = Object.entries(data.candle_sticks_lvl).map(([key]) => key)
@@ -49,10 +48,7 @@ export function getCandlesLevels(event, vm, coin) {
     vm.onchart[0].settings = [vm.onchart[0].settings[0], vm.onchart[0].settings[1], ...levels_settings]
 }
 
-export function getDensities(
-    event,
-    vm
-) {
+export function getDensities( event, vm, coin) {
     const data = JSON.parse(event.data)
 
     const density_up = []
@@ -60,8 +56,8 @@ export function getDensities(
     const density_label_up = []
     const density_label_low = []
 
-    density_up[0] = data.densitys.BTC.ask[0]
-    density_low[0] = data.densitys.BTC.bid[0]
+    density_up[0] = data.densitys[coin].ask[0]
+    density_low[0] = data.densitys[coin].bid[0]
     density_label_up[0] = String(density_up[0])
     density_label_low[0] = String(density_low[0])
 

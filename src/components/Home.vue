@@ -13,7 +13,7 @@
     <hr>
     <ul>
       <li v-for="coin in coinsArr" :key="coin">
-        {{ coin }}
+        <router-link :to="`/coins/${coin}`" >{{ coin }}</router-link>
       </li>
     </ul>
   </div>
@@ -21,7 +21,8 @@
 <script>
 
 export default {
-  props: [ 'coinsArr' ]
+ props: [ 'coinsArr' ]
+
 }
 </script>
 
