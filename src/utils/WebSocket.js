@@ -13,6 +13,7 @@ export const DensitiesSocket = new WebSocket(
 
 export function getCandlesLevels(event, vm, coin) {
     const data = JSON.parse(event.data)
+    console.log(data)
 
     const candlesArr = vm.ohlcv ? vm.ohlcv : []
     const candles = data.candle_sticks_lvl[coin]['5m'].candle_sticks

@@ -22,6 +22,5 @@ export default {
   created() {
     candlesLevelsSocket.onmessage = (event) => getCandlesLevels(event, this, coin)
   },
-
 }
 </script>
