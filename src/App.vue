@@ -10,6 +10,27 @@ export default {
   name: 'app',
   components: {
 
+  },
+  created () {
+    this.candlesLevelsSocket = new WebSocket(
+        (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
+        + "213.189.220.102:8000"
+        + '/ws/charts/'
+    );
+    this.densitiesSocket = new WebSocket(
+        (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
+        + "213.189.220.102:8000"
+        + '/ws/densitys/'
+    );
+
+    this.candlesLevelsSocket.onmessage = (event) => {
+      this.$store.dispatch('handleCandelsSocket', event)
+    }
+    
+    this.densitiesSocket.onmessage = (event) => {
+      this.$store.dispatch('handleDensitiesSocket', event)
+    } 
+
   }
 }
 </script>
