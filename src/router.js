@@ -8,20 +8,8 @@ export default new Router({
     mode: 'history',
     routes: [
         {
-            path: '/home',
+            path: '/',
             component: HomePage
-        },
-        {
-            path: '/ETH',
-            component: () => import('./components/charts/ETH')
-        },
-        {
-            path: '/BCH',
-            component: () => import('./components/charts/BCH')
-        },
-        {
-            path: '/BTC',
-            component: () => import('./components/charts/BTC')
         },
         {
             path: '/coins/:id',

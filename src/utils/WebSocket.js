@@ -11,13 +11,14 @@ export const DensitiesSocket = new WebSocket(
     + '/ws/densitys/'
 );
 
-export function getCandlesLevels(event, vm, coin) {
+export function getCandlesLevels(event, vm, coin = 'BTC', timeframe = '5m') {
     const data = JSON.parse(event.data)
     console.log(data)
 
     const candlesArr = vm.ohlcv ? vm.ohlcv : []
-    const candles = data.candle_sticks_lvl[coin]['5m'].candle_sticks
-    const levels = JSON.parse(JSON.stringify(data.candle_sticks_lvl.BTC['5m'].levels))
+    const candles = data.candle_sticks_lvl[coin][timeframe].candle_sticks
+    console.log('data.candle_sticks_lvl', data.candle_sticks_lvl)
+    const levels = JSON.parse(JSON.stringify(data.candle_sticks_lvl[coin][timeframe].levels))
     const coinsArr = Object.entries(data.candle_sticks_lvl).map(([key]) => key)
 
     if (!candlesArr.length) {
@@ -45,8 +46,8 @@ export function getCandlesLevels(event, vm, coin) {
         label: [String(level)],
         dotted: true
     }))
-
-    vm.onchart[0].settings = [vm.onchart[0].settings[0], vm.onchart[0].settings[1], ...levels_settings]
+    if (vm.onchart && vm.onchart.length > 0)
+        vm.onchart[0].settings = [vm.onchart[0].settings[0], vm.onchart[0].settings[1], ...levels_settings]
 }
 
 export function getDensities( event, vm, coin) {

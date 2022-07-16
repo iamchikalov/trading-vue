@@ -6,16 +6,12 @@
         :height="this.height"
         :overlays="this.overlays"
     ></trading-vue>
-    <Home
-        :coinsArr="array"
-    />
   </div>
 </template>
 
 <script>
 import { TradingVue } from "trading-vue-js"
 import Density from "@/components/overlays/Density"
-import Home from "@/components/Home"
 import {
   candlesLevelsSocket,
   DensitiesSocket,
@@ -23,18 +19,24 @@ import {
   getCandlesLevels
 } from "@/utils/WebSocket"
 
-let coin = 'BTC'
-
 export default {
   name: "BTC",
-  components: { TradingVue, Home },
-
+  components: { TradingVue },
+  props: {
+    timeframe: {
+      type: String,
+      default: '1m'
+    },
+    coin: {
+      type: String,
+      default: 'BTC'
+    }
+  },
   data() {
-    console.log(coin)
     return {
       array: [],
-      width: window.innerWidth,
-      height: window.innerHeight,
+      // width: window.innerWidth,
+      // height: window.innerHeight,
       ohlcv: [],
       overlays: [Density],
       onchart: [
@@ -61,8 +63,8 @@ export default {
     };
   },
   created() {
-    candlesLevelsSocket.onmessage = (event) => getCandlesLevels(event, this, coin)
-    DensitiesSocket.onmessage = (event) => getDensities(event, this, coin)
+    candlesLevelsSocket.onmessage = (event) => getCandlesLevels(event, this, this.coin)
+    DensitiesSocket.onmessage = (event) => getDensities(event, this, this.coin)
   },
 };
 </script>

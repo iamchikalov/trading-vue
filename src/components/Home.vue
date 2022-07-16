@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <h1>Choose coin!</h1>
-    <hr>
+    <!-- <h1>Choose coin!</h1> -->
+    <!-- <hr>
     <a href="/ETH">ETH</a>
     <br>
     <br>
@@ -10,7 +10,7 @@
     <br>
     <a href="/BTC">BTC</a>
     <hr>
-    <hr>
+    <hr> -->
     <ul>
       <li v-for="coin in coinsArr" :key="coin">
         <router-link :to="`/coins/${coin}`" >{{ coin }}</router-link>
